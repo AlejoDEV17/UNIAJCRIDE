@@ -1,15 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Antonio Jose Camacho Institucion Universitaria">
-  <rect width="240" height="240" rx="18" fill="#f7f8fb"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-label="Antonio Jose Camacho Institucion Universitaria">
+  <rect width="180" height="180" rx="22" fill="#f7f8fb"/>
   <g fill="#07579f">
-    <path d="M72 34h44v78c0 28 17 46 42 46 22 0 39-15 43-38V34h-44v69c0 9-6 15-14 15s-14-6-14-15V34H72z"/>
-    <circle cx="137" cy="61" r="22"/>
-    <rect x="73" y="91" width="55" height="7"/>
-    <rect x="73" y="106" width="73" height="7"/>
-    <rect x="73" y="121" width="78" height="7"/>
-    <rect x="73" y="136" width="83" height="7"/>
-    <rect x="73" y="151" width="90" height="7"/>
+    <path d="M48 18h38v72c0 25 15 41 37 41 20 0 35-14 38-35V18h-38v63c0 8-5 13-12 13s-12-5-12-13V18H48z"/>
+    <circle cx="105" cy="43" r="18"/>
+    <rect x="49" y="72" width="50" height="6"/>
+    <rect x="49" y="85" width="65" height="6"/>
+    <rect x="49" y="98" width="70" height="6"/>
+    <rect x="49" y="111" width="76" height="6"/>
+    <rect x="49" y="124" width="81" height="6"/>
   </g>
-  <text x="120" y="177" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800" fill="#07579f">Antonio Jose</text>
-  <text x="120" y="198" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="900" fill="#07579f">Camacho</text>
-  <text x="120" y="211" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="7" font-weight="700" letter-spacing=".9" fill="#07579f">INSTITUCION UNIVERSITARIA</text>
+  <text x="90" y="146" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="800" fill="#07579f">Antonio Jose</text>
+  <text x="90" y="164" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="900" fill="#07579f">Camacho</text>
+  <text x="90" y="174" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="6" font-weight="700" letter-spacing=".6" fill="#07579f">INSTITUCION UNIVERSITARIA</text>
 </svg>

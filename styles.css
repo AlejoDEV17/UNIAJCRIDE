@@ -132,8 +132,8 @@ button {
 }
 
 .institution-mark {
-  width: 124px;
-  height: 124px;
+  width: 138px;
+  height: 138px;
   display: grid;
   place-items: center;
   border-radius: 30px;
@@ -143,7 +143,7 @@ button {
     linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent),
     rgba(0, 26, 55, 0.58);
   box-shadow: 0 0 44px rgba(82, 244, 255, 0.22), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-  padding: 10px;
+  padding: 5px;
 }
 
 .institution-mark img {
@@ -151,7 +151,7 @@ button {
   height: 100%;
   display: block;
   object-fit: contain;
-  border-radius: 22px;
+  border-radius: 24px;
   box-shadow: 0 0 28px rgba(82, 244, 255, 0.16);
 }
 
