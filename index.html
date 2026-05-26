@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#05070f" />
+    <title>UNIAJC-RIDE</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css?v=login-logo-21" />
+  </head>
+  <body>
+    <main class="phone-shell" aria-label="UNIAJC-RIDE">
+      <section class="screen login-screen active" id="loginScreen">
+        <div class="login-glow"></div>
+        <div class="brand-stack">
+          <div class="institution-mark" aria-label="Logo UNIAJC">
+            <img src="assets/uniajc-logo.svg" alt="Antonio Jose Camacho Institucion Universitaria" />
+          </div>
+          <div class="ride-logo">
+            <span class="logo-bolt"></span>
+            <div>
+              <h1>UNIAJC-RIDE</h1>
+              <p>Conectamos estudiantes, transformamos movilidad</p>
+            </div>
+          </div>
+        </div>
+
+        <form class="glass-panel login-card" id="loginForm">
+          <label>
+            Correo institucional
+            <input id="emailInput" type="email" placeholder="nombre@uniajc.edu.co" autocomplete="email" required />
+          </label>
+          <button class="primary-action" type="button" id="sendCodeBtn">Enviar código</button>
+
+          <label class="hidden" id="codeField">
+            Código de verificación
+            <input id="codeInput" type="text" inputmode="numeric" maxlength="6" placeholder="Ingresa el código recibido" />
+          </label>
+
+          <div class="hidden" id="roleBlock">
+            <div class="field-label">Rol</div>
+            <div class="segmented" role="radiogroup" aria-label="Selector de rol">
+              <button type="button" class="segment active" data-role-choice="passenger">Pasajero</button>
+              <button type="button" class="segment" data-role-choice="driver">Conductor</button>
+            </div>
+          </div>
+
+          <button class="primary-action hidden" id="loginSubmitBtn" type="submit">Verificar e ingresar</button>
+          <p class="microcopy" id="loginStatus">Verificación institucional por correo UNIAJC.</p>
+        </form>
+      </section>
+
+      <section class="screen app-screen" id="appScreen">
+        <header class="topbar">
+          <button class="icon-btn avatar-btn" id="profileBtn" aria-label="Perfil">
+            <img id="topAvatar" src="" alt="" />
+          </button>
+          <div class="top-title">
+            <strong id="roleStatus">GPS activo</strong>
+            <span id="movingStatus">conductores en movimiento</span>
+          </div>
+          <button class="icon-btn driver-info hidden" id="driverInfoBtn" aria-label="Perfil del conductor">
+            <span id="driverInfoInitials">DR</span>
+          </button>
+          <button class="icon-btn danger" id="sosBtn" aria-label="SOS">SOS</button>
+        </header>
+
+        <section class="map-zone">
+          <div id="rideMap" class="leaflet-map" aria-label="Mapa en tiempo real de Cali"></div>
+          <canvas id="cityMap" class="legacy-canvas" aria-hidden="true"></canvas>
+          <div class="map-hud">
+            <button class="search-pill" id="openSearchBtn">
+              <span class="search-icon"></span>
+              <span id="destinationLabel">¿A dónde vas?</span>
+            </button>
+          <button class="round-btn" id="settingsBtn" aria-label="Configuración">
+              <svg class="settings-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Z"></path>
+                <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.05.05a2 2 0 0 1-2.83 2.83l-.05-.05A1.7 1.7 0 0 0 15 19.37a1.7 1.7 0 0 0-1 .57V20a2 2 0 0 1-4 0v-.07a1.7 1.7 0 0 0-1-.57 1.7 1.7 0 0 0-1.88.34l-.05.05a2 2 0 1 1-2.83-2.83l.05-.05A1.7 1.7 0 0 0 4.63 15a1.7 1.7 0 0 0-.57-1H4a2 2 0 0 1 0-4h.07a1.7 1.7 0 0 0 .57-1 1.7 1.7 0 0 0-.34-1.88l-.05-.05a2 2 0 0 1 2.83-2.83l.05.05A1.7 1.7 0 0 0 9 4.63a1.7 1.7 0 0 0 1-.57V4a2 2 0 0 1 4 0v.07a1.7 1.7 0 0 0 1 .57 1.7 1.7 0 0 0 1.88-.34l.05-.05a2 2 0 1 1 2.83 2.83l-.05.05A1.7 1.7 0 0 0 19.37 9c.22.32.42.65.57 1H20a2 2 0 0 1 0 4h-.07a1.7 1.7 0 0 0-.53 1Z"></path>
+              </svg>
+            </button>
+          </div>
+        </section>
+
+        <section class="bottom-sheet" id="homeSheet">
+          <div class="sheet-handle"></div>
+          <div class="sheet-head">
+            <div>
+              <span class="eyebrow" id="modeEyebrow">Modo pasajero</span>
+              <h2 id="sheetTitle">Elige tu destino</h2>
+            </div>
+            <span class="live-dot hidden"></span>
+          </div>
+
+          <div class="route-tools hidden" id="passengerQuick">
+            <button class="mini-action" id="locateMeBtn"><span class="tool-dot">⌾</span>Mi ubicación</button>
+          </div>
+
+          <div class="driver-options hidden" id="driverOptions">
+            <article class="driver-option selected">
+              <span class="option-avatar violet">AM</span>
+              <div>
+                <strong>Ana María</strong>
+                <small>UNIAJC Norte → San Fernando</small>
+              </div>
+              <b id="anaPrice">$4.500</b>
+            </article>
+            <article class="driver-option">
+              <span class="option-avatar cyan">MC</span>
+              <div>
+                <strong>Miguel</strong>
+                <small>UNIAJC Sur → Centro</small>
+              </div>
+              <b>$5.200</b>
+            </article>
+          </div>
+
+          <div class="carpool-panel hidden" id="carpoolPanel"></div>
+
+          <div class="driver-panel hidden" id="driverPanel">
+            <div class="driver-state">
+              <strong>Modo conductor activo</strong>
+              <span>Disponible para rutas universitarias</span>
+            </div>
+            <div class="request-list" id="driverRequests"></div>
+          </div>
+
+          <button class="primary-action" id="mainActionBtn">Buscar destino</button>
+        </section>
+      </section>
+
+      <section class="screen profile-screen" id="profileScreen">
+        <header class="sub-header">
+          <button class="icon-btn back-btn" data-back="home" aria-label="Volver"></button>
+          <strong id="profileTitle">Perfil</strong>
+          <button class="icon-btn" id="profileSettingsBtn" aria-label="Configuración">
+            <svg class="settings-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Z"></path>
+              <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.05.05a2 2 0 0 1-2.83 2.83l-.05-.05A1.7 1.7 0 0 0 15 19.37a1.7 1.7 0 0 0-1 .57V20a2 2 0 0 1-4 0v-.07a1.7 1.7 0 0 0-1-.57 1.7 1.7 0 0 0-1.88.34l-.05.05a2 2 0 1 1-2.83-2.83l.05-.05A1.7 1.7 0 0 0 4.63 15a1.7 1.7 0 0 0-.57-1H4a2 2 0 0 1 0-4h.07a1.7 1.7 0 0 0 .57-1 1.7 1.7 0 0 0-.34-1.88l-.05-.05a2 2 0 0 1 2.83-2.83l.05.05A1.7 1.7 0 0 0 9 4.63a1.7 1.7 0 0 0 1-.57V4a2 2 0 0 1 4 0v.07a1.7 1.7 0 0 0 1 .57 1.7 1.7 0 0 0 1.88-.34l.05-.05a2 2 0 1 1 2.83 2.83l-.05.05A1.7 1.7 0 0 0 19.37 9c.22.32.42.65.57 1H20a2 2 0 0 1 0 4h-.07a1.7 1.7 0 0 0-.53 1Z"></path>
+            </svg>
+          </button>
+        </header>
+        <div class="profile-content" id="profileContent"></div>
+      </section>
+
+    </main>
+
+    <div class="modal-layer" id="modalLayer" aria-hidden="true"></div>
+
+    <template id="searchTemplate">
+      <div class="modal-card search-modal">
+        <div class="modal-head">
+          <strong>Buscar destino</strong>
+          <button class="icon-btn close-modal" aria-label="Cerrar"></button>
+        </div>
+        <input class="modal-input" id="destinationInput" placeholder="Cra 2A #57-103, Calle 5 #38-25..." />
+        <div class="result-list" id="resultList"></div>
+      </div>
+    </template>
+
+    <template id="settingsTemplate">
+      <div class="modal-card settings-modal">
+        <div class="modal-head">
+          <strong>Configuración</strong>
+          <button class="icon-btn close-modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="settings-scroll">
+          <section class="setting-block">
+            <h3>Cambiar foto de perfil</h3>
+            <div class="photo-row">
+              <img id="settingsPreview" alt="Preview de perfil" />
+              <label class="file-button">
+                Subir imagen
+                <input id="photoInput" type="file" accept="image/*" />
+              </label>
+            </div>
+          </section>
+          <section class="setting-block">
+            <h3>Cambiar contraseña</h3>
+            <input class="modal-input" type="password" placeholder="Contraseña actual" />
+            <input class="modal-input" type="password" placeholder="Nueva contraseña" />
+          </section>
+          <section class="setting-block">
+            <h3>Cambiar correo</h3>
+            <input class="modal-input" id="settingsEmail" type="email" placeholder="correo@estudiante.uniajc.edu.co" />
+          </section>
+          <section class="setting-block">
+            <h3>Datos personales</h3>
+            <input class="modal-input" id="settingsName" />
+            <input class="modal-input" id="settingsProgram" />
+            <select class="modal-input" id="settingsSemester">
+              <option>Semestre 4</option>
+              <option>Semestre 5</option>
+              <option>Semestre 6</option>
+              <option>Semestre 7</option>
+            </select>
+          </section>
+          <section class="setting-block">
+            <h3>Métodos de pago</h3>
+            <div class="pill-group" data-setting="payment">
+              <button class="pill active">Nequi</button>
+              <button class="pill">Efectivo</button>
+              <button class="pill">Banco</button>
+            </div>
+          </section>
+          <section class="setting-block split-settings">
+            <label class="toggle-row">Privacidad de ubicación <input type="checkbox" checked /><span></span></label>
+            <label class="toggle-row">Notificaciones push <input type="checkbox" checked /><span></span></label>
+            <label class="toggle-row">Alertas de ruta <input type="checkbox" checked /><span></span></label>
+          </section>
+          <section class="setting-block">
+            <h3>Contactos SOS</h3>
+            <div class="contact-builder">
+              <input class="modal-input" id="sosContactInput" placeholder="Nombre o número" />
+              <button class="secondary-action" id="addContactBtn">Agregar</button>
+            </div>
+            <div class="contact-list" id="contactList"></div>
+          </section>
+          <section class="setting-block danger-zone">
+            <h3>Eliminar cuenta</h3>
+            <p>Esta acción desactiva tu perfil local de UNIAJC-RIDE.</p>
+            <button class="danger-action" id="deleteAccountBtn" type="button">Deseo eliminar la cuenta</button>
+          </section>
+        </div>
+        <button class="primary-action" id="saveSettingsBtn">Guardar cambios</button>
+      </div>
+    </template>
+
+    <template id="securityTemplate">
+      <div class="modal-card safety-modal">
+        <div class="modal-head">
+          <strong>Centro de seguridad</strong>
+          <button class="icon-btn close-modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="safety-actions">
+          <button class="danger-action" id="call123Btn">Llamar 123</button>
+          <button class="secondary-action" id="shareLocationBtn">Compartir ubicación</button>
+        </div>
+      </div>
+    </template>
+
+    <template id="rideFoundTemplate">
+      <div class="modal-card ride-modal">
+        <div class="driver-found">
+          <img src="" id="foundDriverAvatar" alt="" />
+          <div>
+            <span>Conductor encontrado</span>
+            <h3 id="foundDriverName"></h3>
+            <p id="foundDriverVehicle"></p>
+          </div>
+        </div>
+        <div class="trip-meta">
+          <span id="foundPlate"></span>
+          <span id="foundEta"></span>
+        </div>
+        <button class="primary-action" id="acceptRideBtn">Aceptar viaje</button>
+      </div>
+    </template>
+
+    <template id="summaryTemplate">
+      <div class="modal-card summary-modal">
+        <div class="modal-head">
+          <strong>Resumen del viaje</strong>
+        </div>
+        <div class="summary-grid">
+          <div><span>Tu cuota</span><strong id="summaryUserCost">$0</strong></div>
+          <div><span>Total viaje</span><strong id="summaryTotalCost">$0</strong></div>
+          <div><span>Pasajeros</span><strong id="summaryRiders">4</strong></div>
+          <div><span>Tiempo</span><strong id="summaryTime">18 min</strong></div>
+          <div><span>CO2 ahorrado</span><strong id="summaryCo2">1.7 kg</strong></div>
+        </div>
+        <div class="field-label">Pago</div>
+        <div class="pill-group" id="paymentOptions">
+          <button class="pill active">Nequi</button>
+          <button class="pill">PSE</button>
+          <button class="pill">Efectivo</button>
+        </div>
+        <button class="primary-action" id="confirmPaymentBtn">Confirmar pago</button>
+      </div>
+    </template>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="app.config.js?v=login-logo-21"></script>
+    <script src="app.js?v=login-logo-21"></script>
+  </body>
+</html>
